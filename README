@@ -1,0 +1,64 @@
+Create database commands
+	// Change database details as you like
+	create database cti_db;
+	use cti_db;
+	GRANT ALL PRIVILEGES ON cti_db TO 'cti_user'@'localhost' IDENTIFIED BY 'cti_WtoDCP7yrMbW2';
+	GRANT ALL PRIVILEGES ON cti_db.* TO 'cti_user'@'localhost' WITH GRANT OPTION;
+	flush privileges;
+
+Files explained
+	client-display.php - The display page which shows all the information (summary and detailed list).
+	client-code.php - The code file that fetches information from WHMCS.
+	connect-info.php - File with database credentials.
+
+templates to duplicate:
+	client-code_template.php
+	client-display_template.php
+
+Interface
+	The interface contains summary information of tickets and a detailed list. Department (billing, abuse, or support) is selected at API creation.
+	Awaiting reply (Open, Customer-Reply)
+	In Progress
+
+Steps to add new clients
+Create a WHMCS user and associate role to it. Create an API for the user to fetch details from the interface. You will need to add the code server IP whitelisted to WHMCS (Setup > General Settings > API IP Access Restriction).
+		WHMCS User: GetTickets
+		WHMCS Password: xx95eIq3U1EUg
+		Admin Role: GetTickets
+		API Credentials:
+		Identifier: NFoqyGNz7rpA4jKWtzystgY1k1niHmOl  (example)
+		Secret: 88v2P6XZXRlK3ywidlj6xytjdgM6jfVOm (example)
+
+Copy code template file "client-code_template.php" and rename according to the client.
+	Eg: For IamClient, IamClient-code.php (just a common pattern)
+
+	Edit the values at "REPLACE-VALUE-HERE" with relevant details.
+	$api_identifier = 'REPLACE-VALUE-HERE';
+	//Example: NFoqyGNz7rpA4jKWtzYlththtrniHmOl
+	$api_secret = 'REPLACE-VALUE-HERE';
+	//Example: 88v2P6XZXRlK3rthrgt6xXWUZM6jfVOm
+	$api_whmurl = 'REPLACE-VALUE-HERE';
+	//Example: https://panel.IamClient.com/includes/api.php
+
+	$db_table_ar = 'REPLACE-VALUE-HERE_ar'; // Awaiting Reply
+	//Example: IamClient_ar
+	$db_table_ip = 'REPLACE-VALUE-HERE_ip'; // In Progress
+	//Example: IamClient_ip
+	$db_table_summ = 'REPLACE-VALUE-HERE_summ'; // Summary Results
+
+Add cron to execute the client code file (time accordingly).
+	Copy the display page template file "client-display_template.php" and rename according to the client.
+	Eg: For IamClient, IamClient-display.php (just a common pattern)
+
+	Edit the values at "REPLACE-VALUE-HERE" with relevant details.
+	$db_table_ar = 'REPLACE-VALUE-HERE'; // Awaiting Reply
+	//Example: IamClient_ar
+	$db_table_ip = 'REPLACE-VALUE-HERE'; // In Progress
+	//Example: IamClient_ip
+	$db_table_summ = 'REPLACE-VALUE-HERE'; // Summary Results
+	//Example: IamClient_summ
+	<h2 align="center">Summary information - REPLACE-VALUE-HERE</h2>
+	//Example: IamClient
+
+
+
