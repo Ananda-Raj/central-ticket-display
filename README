@@ -1,3 +1,6 @@
+Collect ticket data from multiple WHMCS interfaces and display on a single interface
+
+
 Create database commands
 	// Change database details as you like
 	create database cti_db;
